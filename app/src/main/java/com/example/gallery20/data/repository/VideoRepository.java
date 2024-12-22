@@ -5,12 +5,16 @@ import android.database.Cursor;
 import android.provider.MediaStore;
 
 import com.example.gallery20.data.model.Album;
+import com.example.gallery20.data.model.TimelineItem;
 import com.example.gallery20.data.model.Video;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class VideoRepository {
     private Context context;
@@ -58,5 +62,24 @@ public class VideoRepository {
             album.setItemCount(album.getItemCount() + 1);
         }
         return new ArrayList<>(albumHashMap.values());
+    }
+
+    public List<TimelineItem> getTimelineItems(List<Video> videos) {
+        LinkedHashMap<String, List<Video>> groupedVideos = new LinkedHashMap<>();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+        for (Video video : videos){
+            String date = dateFormat.format(video.getDate());
+            groupedVideos.computeIfAbsent(date, k -> new ArrayList<>()).add(video);
+        }
+
+        List<TimelineItem> timelineItems = new ArrayList<>();
+        for (String date : groupedVideos.keySet()) {
+            timelineItems.add(new TimelineItem(TimelineItem.TYPE_HEADER, date));
+            for (Video video : videos) {
+                timelineItems.add(new TimelineItem(TimelineItem.TYPE_VIDEO, video));
+            }
+        }
+        return timelineItems;
     }
 }

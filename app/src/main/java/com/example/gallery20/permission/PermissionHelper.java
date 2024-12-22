@@ -41,6 +41,7 @@ public class PermissionHelper {
     }
 
     public static void showPermissionRationaleDialog(Activity activity) {
+
     }
 
     private static void openSettings(Activity activity) {
