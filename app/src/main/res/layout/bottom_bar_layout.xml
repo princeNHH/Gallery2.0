@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/bottom_bar_height"
+    android:orientation="horizontal"
+    android:weightSum="2"
+    android:paddingHorizontal="@dimen/bottom_bar_padding">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center">
+        <TextView
+            android:id="@+id/video_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Videos"
+            android:textSize="16sp"
+            android:textColor="@color/black"/>
+        <FrameLayout
+            android:id="@+id/video_bar_under_line"
+            android:layout_width="48dp"
+            android:layout_height="2dp"
+            android:background="@color/black"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center">
+        <TextView
+            android:id="@+id/album_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Album"
+            android:textSize="16sp"
+            android:textColor="@color/black"/>
+        <FrameLayout
+            android:id="@+id/album_bar_under_line"
+            android:layout_width="48dp"
+            android:layout_height="2dp"
+            android:background="@color/black"/>
+    </LinearLayout>
+</LinearLayout>

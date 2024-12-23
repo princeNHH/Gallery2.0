@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.provider.MediaStore;
 
 import com.example.gallery20.data.model.Album;
+import com.example.gallery20.data.model.Header;
 import com.example.gallery20.data.model.TimelineItem;
 import com.example.gallery20.data.model.Video;
 
@@ -28,6 +29,7 @@ public class VideoRepository {
         String[] projection = {
                 MediaStore.Video.Media._ID,
                 MediaStore.Video.Media.DATA,
+                MediaStore.Video.Media.DURATION,
                 MediaStore.Video.Media.DATE_TAKEN
         };
         Cursor cursor = context.getContentResolver().query(
@@ -42,7 +44,8 @@ public class VideoRepository {
                 String id = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media._ID));
                 String uri = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA));
                 long date = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_TAKEN));
-                videos.add(new Video(id, uri, date));
+                long duration = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION));
+                videos.add(new Video(id, uri, date, duration));
             }
             cursor.close();
         }
@@ -68,18 +71,22 @@ public class VideoRepository {
         LinkedHashMap<String, List<Video>> groupedVideos = new LinkedHashMap<>();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
-        for (Video video : videos){
+        for (Video video : videos) {
             String date = dateFormat.format(video.getDate());
-            groupedVideos.computeIfAbsent(date, k -> new ArrayList<>()).add(video);
+            if (!groupedVideos.containsKey(date)) {
+                groupedVideos.put(date, new ArrayList<>());
+            }
+            groupedVideos.get(date).add(video);
         }
 
         List<TimelineItem> timelineItems = new ArrayList<>();
         for (String date : groupedVideos.keySet()) {
-            timelineItems.add(new TimelineItem(TimelineItem.TYPE_HEADER, date));
+            timelineItems.add(new Header(date));
             for (Video video : videos) {
-                timelineItems.add(new TimelineItem(TimelineItem.TYPE_VIDEO, video));
+                timelineItems.add(new Video(video.getId(), video.getUri(), video.getDate(), video.getDuration()));
             }
         }
         return timelineItems;
     }
+
 }

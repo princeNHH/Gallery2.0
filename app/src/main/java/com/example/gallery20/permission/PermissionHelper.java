@@ -1,8 +1,7 @@
 package com.example.gallery20.permission;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -11,6 +10,8 @@ import android.provider.Settings;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.core.content.ContextCompat;
+
+import com.example.gallery20.R;
 
 public class PermissionHelper {
 
@@ -41,7 +42,20 @@ public class PermissionHelper {
     }
 
     public static void showPermissionRationaleDialog(Activity activity) {
-
+        Dialog dialog = new Dialog(activity);
+        dialog.setContentView(R.layout.dialog_layout);
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        dialog.getWindow().getAttributes().gravity = android.view.Gravity.BOTTOM;
+        dialog.getWindow().getAttributes().verticalMargin = 0.01f;
+        dialog.findViewById(R.id.button_settings).setOnClickListener(v -> {
+            openSettings(activity);
+            dialog.dismiss();
+        });
+        dialog.findViewById(R.id.button_exit).setOnClickListener(v -> {
+            activity.finish();
+        });
+        dialog.show();
     }
 
     private static void openSettings(Activity activity) {
