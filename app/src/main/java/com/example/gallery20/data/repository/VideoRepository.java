@@ -81,7 +81,7 @@ public class VideoRepository {
 
         List<TimelineItem> timelineItems = new ArrayList<>();
         for (String date : groupedVideos.keySet()) {
-            timelineItems.add(new Header(date));
+            timelineItems.add(new Header(date, videos.size()));
             for (Video video : videos) {
                 timelineItems.add(new Video(video.getId(), video.getUri(), video.getDate(), video.getDuration()));
             }

@@ -19,6 +19,9 @@ public class VideoViewModel extends AndroidViewModel {
     private MutableLiveData<List<Video>> videos = new MutableLiveData<>();
     private MutableLiveData<List<Album>> albums = new MutableLiveData<>();
     private MutableLiveData<List<TimelineItem>> timelineItems = new MutableLiveData<>();
+    private MutableLiveData<List<Video>> selectedVideos = new MutableLiveData<>();
+
+    private MutableLiveData<Boolean> isSelecting = new MutableLiveData<>(false);
 
     public VideoViewModel(@NonNull Application application) {
         super(application);
@@ -56,5 +59,21 @@ public class VideoViewModel extends AndroidViewModel {
 
     private void loadTimelineItems() {
         new Thread(() -> timelineItems.postValue(videoRepository.getTimelineItems(videos.getValue()))).start();
+    }
+
+    public LiveData<Boolean> getIsSelecting() {
+        return isSelecting;
+    }
+
+    public void setIsSelecting(boolean isSelecting) {
+        this.isSelecting.setValue(isSelecting);
+    }
+
+    public LiveData<List<Video>> getSelectedVideos() {
+        if (selectedVideos.getValue() == null) {
+            selectedVideos = new MutableLiveData<>();
+            selectedVideos.setValue(new java.util.ArrayList<>());
+        }
+        return selectedVideos;
     }
 }

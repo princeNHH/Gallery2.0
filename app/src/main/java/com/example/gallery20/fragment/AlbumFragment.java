@@ -1,6 +1,5 @@
 package com.example.gallery20.fragment;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +27,7 @@ public class AlbumFragment extends Fragment {
         videoViewModel = new ViewModelProvider(getActivity()).get(VideoViewModel.class);
         videoViewModel.getTimelineItems().observe(getViewLifecycleOwner(), timelineItems -> {
             RecyclerView recyclerView = view.findViewById(R.id.album_recycler_view);
-            recyclerView.setAdapter(new TimelineAdapter(timelineItems));
+            recyclerView.setAdapter(new TimelineAdapter(timelineItems, videoViewModel));
             recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         });
         return view;
